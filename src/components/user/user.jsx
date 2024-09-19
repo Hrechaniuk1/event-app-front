@@ -3,8 +3,8 @@ import css from './user.module.css'
 function User({data}) {
     return (
         <div className={css.user}>
-            <h4>Name</h4>
-            <p>Email</p>
+            <h4>{data.name}</h4>
+            <p>{data.email}</p>
         </div>
     )
 }

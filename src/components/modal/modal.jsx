@@ -1,27 +1,39 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 import css from './modal.module.css'
 
 
-function Modal({data}) {
+function Modal({id}) {
 
     const initial = {
         name: '',
         email: '',
         dateOfBirth: '',
-        howFound: 'found myself'
+        howUKnow: 'found myself'
+    }
+
+    async function registerOnEvent(data) {
+        axios.defaults.baseURL = 'http://localhost:14000'
+        console.log(data)
+        const result = await axios.patch(`/events/${id}`, data)
+        console.log(result.data)
     }
 
     function submitHandler(values) {
-        console.log(values)
+        const {dateOfBirth} = values
+        const [day, month, year] = dateOfBirth.split('.').map(Number);
+        const today = new Date()
+        registerOnEvent({...values, dateOfBirth: new Date(year, month - 1, day), dateOfRegistration: today})
+
     }
 
     const Schema = Yup.object().shape({
         name: Yup.string().min(2, 'Name should contain at least 2 letters').max(20, 'There is a lot of letters. Max - 20').required('Name is required'),
         email: Yup.string().email('Should be a valid email').required('Email is required'),
-        dateOfBirth: Yup.date().required('Date is required').typeError('Please enter a valid date'),
+        dateOfBirth: Yup.string().required('Date is required').typeError('Please enter a valid date'),
            
     });
 
@@ -48,15 +60,15 @@ function Modal({data}) {
                     <div>
                         <label>
                             Social media
-                            <Field type='radio' value='social media' name='howFound'></Field>
+                            <Field type='radio' value='Social media' name='howUKnow'></Field>
                         </label>
                         <label>
                             Friends
-                            <Field type='radio' value='friends' name='howFound'></Field>
+                            <Field type='radio' value='Friends' name='howUKnow'></Field>
                         </label>
                         <label>
                             Found by myself
-                            <Field type='radio' value='found myself' name='howFound'></Field>
+                            <Field type='radio' value='Found myself' name='howUKnow'></Field>
                         </label>
                     </div>
                     <button type='submit'>Register</button>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from "react-router-dom";
 
 import css from './eventItem.module.css'
@@ -10,40 +10,41 @@ function EventItem({data}) {
     function openModal() {
         setIsOpen(true)
     }
-    function closeModal() {
-        setIsOpen(false)
-    }
+    const closeModal = useCallback(() => {
+        setIsOpen(false);
+    }, []);
 
-    function keyDawnHandler(event) {
-        if(event.key === 'Escape') { 
-            closeModal()
-            document.removeEventListener('keydown', keyDawnHandler)
+    const keyDownHandler = useCallback((event) => {
+        if (event.key === 'Escape') {
+            closeModal();
+            document.removeEventListener('keydown', keyDownHandler);
         }
-    }
+    }, [closeModal]);
 
     useEffect(() => {
         if(isOpen) {
-            document.addEventListener('keydown', keyDawnHandler);
+            document.addEventListener('keydown', keyDownHandler);
             return () => {
-                document.removeEventListener('keydown', keyDawnHandler);
+                document.removeEventListener('keydown', keyDownHandler);
             };
         }
-    }, [isOpen])
+    }, [isOpen, keyDownHandler])
 
     return (
         <div className={css.card}>
-            <h3 className={css.title}>Title</h3>
-            <p className={css.description}>Description</p>
+            <h3 className={css.title}>{data.title}</h3>
+            <p className={css.description}>{data.description}</p>
+            <p>{data.organizer}</p>
+            <p>{data.eventDate}</p>
             <ul className={css.btnList}>
                 <li><button onClick={openModal} className={css.regBtn}>Register</button></li>
                 <li>
-                    <Link to={'/55555'}>View</Link>
+                    <Link to={`${data._id}`}>View</Link>
                     </li>
             </ul>
-            {isOpen ? <Modal></Modal> : <></>}
+            {isOpen ? <Modal id={data._id}></Modal> : <></>}
         </div>
     )
 }
-import UserList from '../userList/userList';
 
 export default EventItem
