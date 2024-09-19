@@ -1,0 +1,36 @@
+.card {
+    border: 2px solid black;
+    padding: 20px;
+}
+
+.title {
+    text-align: left;
+    font-size: 20px;
+}
+
+.description {
+    text-align: left;
+    font-size: 14px;
+    max-width: 80%;
+    max-height: 30%;
+    overflow: auto;
+}
+
+.btnList {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.regBtn, .viewLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid gray;
+    outline: transparent;
+    transition: all 250ms ease-in-out;
+}
+
+.regBtn:hover, .viewLink:hover {
+    border-color: black;
+}
