@@ -42,7 +42,7 @@ function EventItem({data}) {
                     <Link to={`${data._id}`}>View</Link>
                     </li>
             </ul>
-            {isOpen ? <Modal id={data._id}></Modal> : <></>}
+            {isOpen ? <Modal id={data._id} closeModal={closeModal}></Modal> : <></>}
         </div>
     )
 }

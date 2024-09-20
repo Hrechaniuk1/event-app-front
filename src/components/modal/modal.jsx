@@ -6,34 +6,31 @@ import axios from 'axios';
 import css from './modal.module.css'
 
 
-function Modal({id}) {
+function Modal({id, closeModal}) {
 
     const initial = {
         name: '',
         email: '',
         dateOfBirth: '',
-        howUKnow: 'found myself'
+        howUKnow: 'Found myself'
     }
 
     async function registerOnEvent(data) {
         axios.defaults.baseURL = 'http://localhost:14000'
-        console.log(data)
-        const result = await axios.patch(`/events/${id}`, data)
-        console.log(result.data)
+        await axios.patch(`/events/${id}`, data)
     }
 
     function submitHandler(values) {
-        const {dateOfBirth} = values
-        const [day, month, year] = dateOfBirth.split('.').map(Number);
         const today = new Date()
-        registerOnEvent({...values, dateOfBirth: new Date(year, month - 1, day), dateOfRegistration: today})
+        registerOnEvent({...values, dateOfRegistration: today})
+        closeModal()
 
     }
 
     const Schema = Yup.object().shape({
         name: Yup.string().min(2, 'Name should contain at least 2 letters').max(20, 'There is a lot of letters. Max - 20').required('Name is required'),
         email: Yup.string().email('Should be a valid email').required('Email is required'),
-        dateOfBirth: Yup.string().required('Date is required').typeError('Please enter a valid date'),
+        dateOfBirth: Yup.date().required('Date is required').typeError('Please enter a valid date'),
            
     });
 
@@ -54,7 +51,7 @@ function Modal({id}) {
                     <Field id='email' name='email'></Field>
                     <ErrorMessage className={css.error} component='span' name='email'></ErrorMessage>
                     <label htmlFor='dateOfBirth'>Date of birth</label>
-                    <Field id='dateOfBirth' name='dateOfBirth'></Field>
+                    <Field id='dateOfBirth' type='date' name='dateOfBirth'></Field>
                     <ErrorMessage className={css.error} component='span' name='dateOfBirth'></ErrorMessage>
                     <label>Where did you hear about this event?</label>
                     <div>
