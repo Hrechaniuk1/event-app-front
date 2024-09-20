@@ -21,7 +21,7 @@ function Modal({id, closeModal}) {
     }
 
     async function registerOnEvent(data) {
-        axios.defaults.baseURL = 'http://localhost:14000'
+        axios.defaults.baseURL = 'https://event-app-toi1.onrender.com'
         await axios.patch(`/events/${id}`, data)
     }
 

@@ -19,7 +19,7 @@ function EventList() {
         async function getEvents() {
             setError(false)
             if(page > totalPages) return
-            axios.defaults.baseURL = 'http://localhost:14000'
+            axios.defaults.baseURL = 'https://event-app-toi1.onrender.com'
             const result = await axios.get('/events',{params: {perPage: 15, page, sortBy, sortOrder}})
             setTotalPages(result.data.data.totalPages)
             if(page === 1) {

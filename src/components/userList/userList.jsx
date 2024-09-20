@@ -40,7 +40,7 @@ function UserList(){
     useEffect(() => {
         async function getUsers() {
             setError(false)
-            axios.defaults.baseURL = 'http://localhost:14000'
+            axios.defaults.baseURL = 'https://event-app-toi1.onrender.com'
             const result = await axios.get(`/events/${id}`)
             setInfo(result.data.data.participants)
         }
