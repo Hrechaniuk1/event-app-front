@@ -1,0 +1,18 @@
+.footer {
+    background-color: #b3e5fc;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.tel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.address {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+}
