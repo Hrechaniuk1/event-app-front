@@ -2,14 +2,13 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useState } from 'react';
 
 import * as Yup from 'yup'
-import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import css from './modal.module.css'
-import Error from '../error/error';
+import css from './registrationPage.module.css'
+import { useLocation } from 'react-router-dom';
 
 
-function Modal({id, closeModal}) {
+function RegistrationPage() {
     const [submit, setSubmit] = useState(false)
     const [error, setError] = useState(false)
 
@@ -20,9 +19,12 @@ function Modal({id, closeModal}) {
         howUKnow: 'Found myself'
     }
 
+    const {state} = useLocation()
+
     async function registerOnEvent(data) {
-        axios.defaults.baseURL = 'https://event-app-u9tk.onrender.com'
-        await axios.patch(`/events/${id}`, data)
+    axios.defaults.baseURL = 'https://event-app-u9tk.onrender.com'
+    await axios.patch(`/events/${state.id}`, data)
+        
     }
 
     function submitHandler(values) {
@@ -30,9 +32,7 @@ function Modal({id, closeModal}) {
         const today = new Date()
         registerOnEvent({...values, dateOfRegistration: today})
         setSubmit(true)
-        setTimeout(() => {
-            closeModal();
-        }, 5000); 
+
         } catch {
             setError(true)
         }
@@ -59,17 +59,16 @@ function Modal({id, closeModal}) {
            
     });
 
-    return ReactDOM.createPortal(
-        <div className={css.layout}>
+    return (
+        <div>
         {!error ? <div className={css.modal}>
-            <button className={css.closeBtn} onClick={() => closeModal()} >X</button>
             {!submit ? <Formik
             initialValues={initial}
             onSubmit={submitHandler}
             validationSchema={Schema}
             >
                 <Form className={css.form}>
-                    <h2>Event registration</h2>
+                    <h2>Registration on {state.title}</h2>
                     <label htmlFor='fullName'>Full name</label>
                     <Field id='fullName' name='name'></Field>
                     <ErrorMessage className={css.error} name='name' component='span'></ErrorMessage>
@@ -80,7 +79,7 @@ function Modal({id, closeModal}) {
                     <Field id='dateOfBirth' type='date' name='dateOfBirth'></Field>
                     <ErrorMessage className={css.error} component='span' name='dateOfBirth'></ErrorMessage>
                     <label>Where did you hear about this event?</label>
-                    <div>
+                    <div className={css.radioGroup}>
                         <label>
                             Social media
                             <Field type='radio' value='Social media' name='howUKnow'></Field>
@@ -94,13 +93,12 @@ function Modal({id, closeModal}) {
                             <Field type='radio' value='Found myself' name='howUKnow'></Field>
                         </label>
                     </div>
-                    <button type='submit'>Register</button>
+                    <button className={css.btn} type='submit'>Register</button>
                 </Form>
             </Formik> : <p>Thank you for registration. Check your information on event page!</p>}
         </div> : <div className={css.modal}><p>Oops, try again in one minute</p></div>}
-        </div>,
-        document.getElementById('modal-root')
+        </div>
     )
 }
 
-export default Modal
+export default RegistrationPage
