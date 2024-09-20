@@ -11,11 +11,14 @@ function EventList() {
     const [sortBy, setSortBy] = useState('title')
     const [sortOrder, setSortOrder] = useState('asc')
     const [hasMore, setHasMore] = useState(false)
+    const [totalPages, setTotalPages] = useState(1)
 
     useEffect(() => {
         async function getEvents() {
+            if(page > totalPages) return
             axios.defaults.baseURL = 'http://localhost:14000'
             const result = await axios.get('/events',{params: {perPage: 15, page, sortBy, sortOrder}})
+            setTotalPages(result.data.data.totalPages)
             if(page === 1) {
                 setEvents(result.data.data.data)
             } else {
@@ -29,7 +32,7 @@ function EventList() {
             }
         }
         getEvents()
-    }, [page, sortBy, sortOrder])
+    }, [page, sortBy, sortOrder, totalPages])
 
     useEffect(() => {
         function handleScroll() {

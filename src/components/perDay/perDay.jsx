@@ -3,13 +3,13 @@ import { useState, useEffect } from 'react';
 import css from './perDay.module.css'
 
 
-function PerDay() {
+function PerDay({perDay}) {
     const [currentRegistrations, setCurrentRegistrations] = useState(0);
     const [maxRegistrations, setMaxRegistrations] = useState(10);
 
     useEffect(() => {
-        setCurrentRegistrations(4)
-    }, [])
+        setCurrentRegistrations(perDay)
+    }, [perDay])
 
 
     const progressPercentage = Math.min((currentRegistrations / maxRegistrations) * 100, 100);
