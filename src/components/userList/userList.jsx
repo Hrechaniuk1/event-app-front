@@ -14,6 +14,7 @@ function UserList(){
     const [info, setInfo] = useState([])
     const [value, setValue] = useState('')
     const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const filteredUsers = info.filter(item => item.name.toLowerCase().includes(value.toLocaleLowerCase().trim()) || item.email.toLowerCase().includes(value.toLowerCase().trim()) )
 
@@ -39,17 +40,23 @@ function UserList(){
 
     useEffect(() => {
         async function getUsers() {
+            try {
             setError(false)
-            axios.defaults.baseURL = 'https://event-app-toi1.onrender.com'
+            setLoading(true)
+            axios.defaults.baseURL = 'https://event-app-u9tk.onrender.com'
             const result = await axios.get(`/events/${id}`)
             setInfo(result.data.data.participants)
+            } catch {
+                setError(true)
+            } finally {
+                setLoading(false)
+            }
+            
         }
 
-        try {
+
             getUsers()
-        } catch {
-            setError(true)
-        }
+
 
 
     }, [id])
@@ -57,12 +64,16 @@ function UserList(){
 
     return (
      !error ? <div>
+        {info.length === 0 && !loading ? <p className={css.noOne}>There are no registrations yet. You can be the very first</p> : <div>
             <p>Registrations per day</p>
             <PerDay perDay={perDay}></PerDay>
             <SearchBar value={value} changeHandler={changeHandler}></SearchBar>
-        {info.length > 0 ? <ul className={css.list}>
+            
+            {loading ? <div className={css.loading}>Loading...</div> : <></>}
+        {info.length !==0 ? (<div><p className={css.title}>Users registered on this event</p> <ul className={css.list}>
             {filteredUsers.map(item => (<li key={item._id}><User data={item}></User></li>))}
-        </ul> : <p>There are no registrations yet. You can be the very first</p>}
+        </ul></div> ): <></>}
+        </div>}
         </div> : <Error></Error>
     )
 }

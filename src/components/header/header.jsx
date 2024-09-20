@@ -1,9 +1,11 @@
+import { Link } from "react-router-dom";
+
 import css from './header.module.css'
 
 function Header() {
     return (
         <header className={css.header}>
-        <a href="">Logo</a>
+        <Link to="/">Logo</Link>
         </header>
     )
 }

@@ -8,7 +8,7 @@ import Header from './components/header/header';
 import Footer from './components/footer/footer';
 
 function App() {
-  return (<div>
+  return (<div className={css.container}>
   <Header></Header>
   <div className={css.app}>
         <Routes>
