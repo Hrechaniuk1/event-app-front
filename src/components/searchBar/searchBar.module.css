@@ -1,0 +1,25 @@
+.input {
+    border: 1px solid #b3e5fc;
+    border-radius: 25px;
+    max-width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.input input {
+    width: 50%;
+    border-radius: 5px;
+    border: 1px solid #b3e5fc;
+    transition: all 250ms ease-in-out;
+    outline: transparent;
+    padding: 5px;
+}
+
+.input input:focus {
+    border-color: #0288d1;
+}

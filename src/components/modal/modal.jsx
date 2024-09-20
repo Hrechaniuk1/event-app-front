@@ -1,12 +1,17 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { useState } from 'react';
+
 import * as Yup from 'yup'
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import css from './modal.module.css'
+import Error from '../error/error';
 
 
 function Modal({id, closeModal}) {
+    const [submit, setSubmit] = useState(false)
+    const [error, setError] = useState(false)
 
     const initial = {
         name: '',
@@ -21,23 +26,44 @@ function Modal({id, closeModal}) {
     }
 
     function submitHandler(values) {
+        try {
         const today = new Date()
         registerOnEvent({...values, dateOfRegistration: today})
-        closeModal()
+        setSubmit(true)
+        setTimeout(() => {
+            closeModal();
+        }, 5000); 
+        } catch {
+            setError(true)
+        }
 
     }
 
     const Schema = Yup.object().shape({
         name: Yup.string().min(2, 'Name should contain at least 2 letters').max(20, 'There is a lot of letters. Max - 20').required('Name is required'),
         email: Yup.string().email('Should be a valid email').required('Email is required'),
-        dateOfBirth: Yup.date().required('Date is required').typeError('Please enter a valid date'),
+        dateOfBirth: Yup.date()
+        .required('Date is required')
+        .typeError('Please enter a valid date')
+        .test('age', 'You must be at least 16 years old to visit an event on your own', value => {
+            if (!value) return false; 
+            const today = new Date();
+            const birthDate = new Date(value);
+            const age = today.getFullYear() - birthDate.getFullYear();
+            const monthDifference = today.getMonth() - birthDate.getMonth();
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                return age > 16;
+            }
+            return age >= 16; 
+        }),
            
     });
 
     return ReactDOM.createPortal(
         <div className={css.layout}>
-        <div className={css.modal}>
-            <Formik
+        {!error ? <div className={css.modal}>
+            <button className={css.closeBtn} onClick={() => closeModal()} >X</button>
+            {!submit ? <Formik
             initialValues={initial}
             onSubmit={submitHandler}
             validationSchema={Schema}
@@ -70,8 +96,8 @@ function Modal({id, closeModal}) {
                     </div>
                     <button type='submit'>Register</button>
                 </Form>
-            </Formik>
-        </div>
+            </Formik> : <p>Thank you for registration. Check your information on event page!</p>}
+        </div> : <div className={css.modal}><p>Oops, try again in one minute</p></div>}
         </div>,
         document.getElementById('modal-root')
     )

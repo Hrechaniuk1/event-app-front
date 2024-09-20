@@ -1,18 +1,28 @@
 .card {
-    border: 2px solid black;
+    border: 1px solid #b3e5fc;
     padding: 20px;
+    height: 440px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
 
 .title {
     text-align: left;
     font-size: 20px;
 }
 
+.minTitle, .span {
+    font-weight: 500;
+}
+
 .description {
     text-align: left;
     font-size: 14px;
     max-width: 80%;
-    max-height: 30%;
+    min-height: 40px;
+    max-height: 20%;
     overflow: auto;
 }
 
@@ -22,15 +32,24 @@
     padding: 0;
 }
 
-.regBtn, .viewLink {
+.regBtn, .viewBtn {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid gray;
+    font-size: 14px;
+    width: 70px;
+    height: 30px;
+    padding: 5px;
+    margin-top: 30px;
     outline: transparent;
     transition: all 250ms ease-in-out;
+    background-color: #b3e5fc;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
-.regBtn:hover, .viewLink:hover {
-    border-color: black;
+.regBtn:hover, .viewBtn:hover {
+    background-color: #0288d1;
+    color: wheat;
 }

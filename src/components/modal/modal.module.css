@@ -7,8 +7,27 @@
     gap: 40px;
     justify-content: center;
     align-items: center;
-    border: 2px solid black;
+    border: 1px solid #b3e5fc;
     background-color: white;
+    position: relative;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 250ms ease-in-out;
+    background-color: #b3e5fc;
+    outline: transparent;
+    border: 1px solid transparent;
+}
+
+.closeBtn:hover {
+    background-color: #0288d1;
+    color: wheat;
 }
 
 .form {

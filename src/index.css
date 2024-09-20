@@ -19,7 +19,13 @@ ul {
 
 
 body {
-  margin: 0;
+  margin: 30px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  padding: 0;
 }
 
 h1 {

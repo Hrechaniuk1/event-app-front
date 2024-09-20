@@ -1,10 +1,13 @@
 .progressContainer {
     width: 100%;
-    background-color: #f3f3f3;
+    border: 1px solid black;
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 20px;
 }
 .progressBar {
     height: 20px;

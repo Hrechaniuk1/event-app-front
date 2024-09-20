@@ -4,6 +4,7 @@ import axios from "axios";
 import EventItem from "../eventItem/eventItem";
 import SortBar from "../sortBar/sortBar";
 import css from './eventList.module.css'
+import Error from "../error/error";
 
 function EventList() {
     const [events, setEvents] = useState([])
@@ -12,9 +13,11 @@ function EventList() {
     const [sortOrder, setSortOrder] = useState('asc')
     const [hasMore, setHasMore] = useState(false)
     const [totalPages, setTotalPages] = useState(1)
+    const [error, setError] = useState(false)
 
     useEffect(() => {
         async function getEvents() {
+            setError(false)
             if(page > totalPages) return
             axios.defaults.baseURL = 'http://localhost:14000'
             const result = await axios.get('/events',{params: {perPage: 15, page, sortBy, sortOrder}})
@@ -31,7 +34,12 @@ function EventList() {
                 setHasMore(false)
             }
         }
-        getEvents()
+        try {
+            getEvents()
+        } catch {
+            setError(true)
+        }
+
     }, [page, sortBy, sortOrder, totalPages])
 
     useEffect(() => {
@@ -56,12 +64,12 @@ function EventList() {
     
 
     return (
-        <div>
+       !error ? <div>
             <SortBar onSort={onSort}></SortBar>
             <ul className={css.eventList}>
              {events.map(item => (<li key={item._id}><EventItem data={item}></EventItem></li>))}
          </ul>
-        </div>
+        </div> : <Error></Error>
     )
 }
 
