@@ -72,11 +72,10 @@ function EventList() {
     return (
        !error ? <div>
             <SortBar onSort={onSort}></SortBar>
-            {!loading ? <div>
             {events.length !==0 ? <ul className={css.eventList}>
              {events.map(item => (<li key={item._id}><EventItem data={item}></EventItem></li>))}
          </ul> : <></>}
-         </div> : <div className={css.loading}>Loading...</div>}
+         {loading ?  <div className={css.loading}>Loading...</div> : <></>}
         </div> : <Error></Error>
     )
 }

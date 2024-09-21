@@ -40,7 +40,7 @@ function RegistrationPage() {
     }
 
     const Schema = Yup.object().shape({
-        name: Yup.string().min(2, 'Name should contain at least 2 letters').max(20, 'There is a lot of letters. Max - 20').required('Name is required'),
+        name: Yup.string().min(3, 'Name should contain at least 3 letters').max(20, 'There is a lot of letters. Max - 20').required('Name is required'),
         email: Yup.string().email('Should be a valid email').required('Email is required'),
         dateOfBirth: Yup.date()
         .required('Date is required')
